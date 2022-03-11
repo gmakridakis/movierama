@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+    - id: isort
+      name: isort
+      language: system
+      entry: isort --settings-path=.pre-commit
+      exclude: (/settings/|/migrations/)
+      require_serial: true
+      types: [ python ]
+    - id: black
+      name: black
+      language: system
+      entry: black --config=.pre-commit/pyproject.toml
+      exclude: (/settings/|/migrations/)
+      require_serial: true
+      types: [ python ]
