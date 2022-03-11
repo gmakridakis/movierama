@@ -1,0 +1,59 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                <h4>
+                    <i class="fas fa-user-plus"></i>Sign up
+                </h4>
+                </div>
+                <form action="{% url 'register' %}" method="POST">
+                {% csrf_token %}
+                    <table class="table">
+                        <thead>
+                        </thead>
+                        <tr>
+                            <td><label for="first_name">First Name</label></td>
+                            <td><input type="text" name="first_name" class="form-control" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="last_name">Last Name</label></td>
+                            <td><input type="text" name="last_name" class="form-control" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="username">Username</label></td>
+                            <td><input type="text" name="username" class="form-control" required></td>
+                        </tr>
+                        <tr>
+                              <td><label for="email">Email</label></td>
+                              <td><input type="email" name="email" class="form-control" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="password2">Password</label></td>
+                            <td><input type="password" name="password" class="form-control" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="password">Confirm Password</label></td>
+                            <td><input type="password" name="password2" class="form-control" required></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        <td><input type="submit" value="Register" class="btn btn-secondary btn-block"></td>
+                        </tr>
+                    </table>
+            </form>
+            </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
