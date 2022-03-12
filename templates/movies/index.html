@@ -50,6 +50,8 @@
                               <th scope="col">Title</th>
                               <th scope="col">Description</th>
                               <th scope="col">Submitted by</th>
+                              <th scope="col">Votes</th>
+
                             </tr>
                           </thead>
                             {% for movie in movies %}
@@ -63,6 +65,32 @@
                                         (deleted user)
                                     {% endif %}
                                 </td>
+                                <td>
+                                    {{ movie.upvotes}} Likes
+                                    {{ movie.downvotes}} Hates
+                                </td>
+                                {% if user.is_authenticated %}
+                                    {% if movie.user.id != user.id %}
+                                        <td>
+                                            <form action="{% url 'add_vote' %}" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                <input type="hidden" name="is_upvote" value="True">
+                                                <input type="submit" value="Like" class="btn btn-secondary btn-block">
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form action="{% url 'add_vote' %}" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                <input type="hidden" name="is_upvote" value="False">
+                                                <input type="submit" value="Hate" class="btn btn-danger">
+                                            </form>
+                                        </td>
+                                    {%  endif %}
+                                {%  endif %}
                             </tr>
                             {%  endfor %}
                     </table>
