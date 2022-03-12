@@ -18,14 +18,14 @@
                     {% if user.is_authenticated %}
                         <form id="logout" action="{% url 'logout' %}" method="POST">
                           {% csrf_token %}
-                            <input type="submit" value="Logout" class="btn btn-dark btn-block">
+                            <input type="submit" value="Logout" class="btn btn-outline-danger btn-block">
                         </form>
                     {% else %}
                         <a class="btn btn-secondary btn-block" href="{% url 'login' %}"><i class="fas fa-user-plus"></i>Login</a>
                     {% endif %}
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-secondary btn-block" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Sign up</a>
+                    <a class="btn btn-primary btn-block" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Sign up</a>
                 </div>
                 <div class="col-md-4">
                     {% if user.is_authenticated %}
@@ -75,30 +75,48 @@
                                     {% if movie.user.id != user.id %} {# Users cannot vote for their own movies #}
                                             {% with vote=user|get_users_votes:movie %}
                                                 {% if vote == True %}
-                                                    You like this movie
+                                                    <td>You like this movie</td>
+                                                    <td>
+                                                        <form action="{% url 'retract_vote' %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                            <input type="hidden" name="is_upvote" value=True>
+                                                            <input type="submit" value="Unlike" class="btn btn-outline-secondary btn-block">
+                                                        </form>
+                                                    </td>
                                                 {% elif vote == False %}
-                                                    You hate this movie
+                                                    <td>You hate this movie</td>
+                                                    <td>
+                                                        <form action="{% url 'retract_vote' %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                            <input type="hidden" name="is_upvote" value=False>
+                                                            <input type="submit" value="Unhate" class="btn btn-outline-danger btn-block">
+                                                        </form>
+                                                    </td>
                                                 {% elif vote == None %}
-                                                    You have not voted for this movie
+                                                    <td>
+                                                        <form action="{% url 'add_vote' %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                            <input type="hidden" name="is_upvote" value=True>
+                                                            <input type="submit" value="Like" class="btn btn-secondary btn-block">
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form action="{% url 'add_vote' %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                            <input type="hidden" name="is_upvote" value=False>
+                                                            <input type="submit" value="Hate" class="btn btn-danger">
+                                                        </form>
+                                                    </td>
                                                 {% endif %}
-                                            <td>
-                                                <form action="{% url 'add_vote' %}" method="POST">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                                                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                                                    <input type="hidden" name="is_upvote" value=True>
-                                                    <input type="submit" value="Like" class="btn btn-secondary btn-block">
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <form action="{% url 'add_vote' %}" method="POST">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                                                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                                                    <input type="hidden" name="is_upvote" value=False>
-                                                    <input type="submit" value="Hate" class="btn btn-danger">
-                                                </form>
-                                            </td>
+
                                         {% endwith %}
                                     {%  endif %}
                                 {%  endif %}
