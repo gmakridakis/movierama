@@ -12,7 +12,7 @@
     <div id="header">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     {% if user.is_authenticated %}
                         <form id="logout" action="{% url 'logout' %}" method="POST">
                           {% csrf_token %}
@@ -22,8 +22,13 @@
                         <a class="btn btn-secondary btn-block" href="{% url 'login' %}"><i class="fas fa-user-plus"></i>Login</a>
                     {% endif %}
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <a class="btn btn-secondary btn-block" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Sign up</a>
+                </div>
+                <div class="col-md-4">
+                    {% if user.is_authenticated %}
+                        <a class="btn btn-secondary btn-block" href="{% url 'add_movie' %}"><i class="fas fa-user-plus"></i>New Movie</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
