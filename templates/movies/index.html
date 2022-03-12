@@ -1,4 +1,6 @@
 {%  load static %}
+{%  load app_filters %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,25 +72,34 @@
                                     {{ movie.downvotes}} Hates
                                 </td>
                                 {% if user.is_authenticated %}
-                                    {% if movie.user.id != user.id %}
-                                        <td>
-                                            <form action="{% url 'add_vote' %}" method="POST">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="user_id" value="{{ user.id }}">
-                                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                                                <input type="hidden" name="is_upvote" value="True">
-                                                <input type="submit" value="Like" class="btn btn-secondary btn-block">
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form action="{% url 'add_vote' %}" method="POST">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="user_id" value="{{ user.id }}">
-                                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                                                <input type="hidden" name="is_upvote" value="False">
-                                                <input type="submit" value="Hate" class="btn btn-danger">
-                                            </form>
-                                        </td>
+                                    {% if movie.user.id != user.id %} {# Users cannot vote for their own movies #}
+                                            {% with vote=user|get_users_votes:movie %}
+                                                {% if vote == True %}
+                                                    You like this movie
+                                                {% elif vote == False %}
+                                                    You hate this movie
+                                                {% elif vote == None %}
+                                                    You have not voted for this movie
+                                                {% endif %}
+                                            <td>
+                                                <form action="{% url 'add_vote' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                    <input type="hidden" name="is_upvote" value=True>
+                                                    <input type="submit" value="Like" class="btn btn-secondary btn-block">
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form action="{% url 'add_vote' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                                    <input type="hidden" name="is_upvote" value=False>
+                                                    <input type="submit" value="Hate" class="btn btn-danger">
+                                                </form>
+                                            </td>
+                                        {% endwith %}
                                     {%  endif %}
                                 {%  endif %}
                             </tr>

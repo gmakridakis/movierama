@@ -6,8 +6,7 @@ from movies.models import Movie, Vote
 
 def index(request):
     movies = Movie.objects.all().order_by("-date_added")
-    votes = Vote.objects.filter(movie__in=movies)
-    context = {"movies": movies, "votes": votes}
+    context = {"movies": movies}
     return render(request, "movies/index.html", context)
 
 
@@ -52,22 +51,19 @@ def add_vote(request):
         except Movie.DoesNotExist:
             print(f"User with ID {user_id} has already voted for movie with ID {movie_id}")
             # messages.error(request, "You have already voted for this movie")
-            return redirect("index")
+            return redirect(request.META["HTTP_REFERER"])
 
         try:
             vote = Vote.objects.create(user_id=user_id, movie_id=movie_id, is_upvote=is_upvote)
-            print(f"is_upvote: {is_upvote}")
             if is_upvote == "True":
-                print("LIKE")
                 movie.upvotes += 1
             else:
-                print("HATE")
                 movie.downvotes += 1
             vote.save()
             movie.save()
         except IntegrityError:
             print(f"User with ID {user_id} has already voted for movie with ID {movie_id}")
             # messages.error(request, "You have already voted for this movie")
-            return redirect("index")
+            return redirect(request.META["HTTP_REFERER"])
 
-    return redirect("index")
+    return redirect(request.META["HTTP_REFERER"])
