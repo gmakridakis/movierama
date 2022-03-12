@@ -9,6 +9,12 @@ def index(request):
     return render(request, "movies/index.html", context)
 
 
+def user_movies(request, user_id):
+    movies = Movie.objects.filter(user_id=user_id).order_by("-date_added")
+    context = {"movies": movies}
+    return render(request, "movies/index.html", context)
+
+
 def add_movie(request):
     if request.method == "POST":
         title = request.POST["title"]

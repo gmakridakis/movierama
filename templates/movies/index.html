@@ -49,13 +49,20 @@
                             <tr>
                               <th scope="col">Title</th>
                               <th scope="col">Description</th>
-                              <th></th>
+                              <th scope="col">Submitted by</th>
                             </tr>
                           </thead>
                             {% for movie in movies %}
                             <tr>
                                 <td>{{ movie.title }}</td>
                                 <td>{{ movie.description }}</td>
+                                <td>
+                                    {%  if movie.user %}
+                                        <a href="{% url "user_movies" movie.user.id %}">{{ movie.user.username }}</a>
+                                    {%  else %}
+                                        (deleted user)
+                                    {% endif %}
+                                </td>
                             </tr>
                             {%  endfor %}
                     </table>
