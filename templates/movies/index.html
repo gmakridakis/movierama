@@ -9,6 +9,26 @@
 <body>
 
 {% block content %}
+    <div id="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    {% if user.is_authenticated %}
+                        <form id="logout" action="{% url 'logout' %}" method="POST">
+                          {% csrf_token %}
+                            <input type="submit" value="Logout" class="btn btn-secondary btn-block">
+                        </form>
+                    {% else %}
+                    (Login button here)
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <a class="btn btn-secondary btn-block" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">

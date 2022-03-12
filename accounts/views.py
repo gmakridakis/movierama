@@ -1,3 +1,4 @@
+from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
@@ -28,3 +29,11 @@ def register(request):
 
     else:
         return render(request, "accounts/register.html")
+
+
+def logout(request):
+    if request.method == "POST":
+        auth.logout(request)
+        messages.success(request, "You are now logged out")
+        # return redirect("login")
+        return render(request, "movies/index.html")
