@@ -16,10 +16,10 @@
                     {% if user.is_authenticated %}
                         <form id="logout" action="{% url 'logout' %}" method="POST">
                           {% csrf_token %}
-                            <input type="submit" value="Logout" class="btn btn-secondary btn-block">
+                            <input type="submit" value="Logout" class="btn btn-dark btn-block">
                         </form>
                     {% else %}
-                    (Login button here)
+                        <a class="btn btn-secondary btn-block" href="{% url 'login' %}"><i class="fas fa-user-plus"></i>Login</a>
                     {% endif %}
                 </div>
                 <div class="col-md-6">

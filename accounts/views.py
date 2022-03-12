@@ -14,18 +14,24 @@ def register(request):
 
         # Validations
         if password != password2:
+            print("Passwords do not match")
             # messages.error(request, "Passwords do not match")
             return redirect("register")
 
         if User.objects.filter(username=username).exists():
-            # messages.error(request, f"User with the username {username} already exists")
+            print(f"User with username {username} already exists")
+            # messages.error(request, f"User with username {username} already exists")
             return redirect("register")
 
-        user = User.objects.create(
+        user = User.objects.create_user(
             username=username, first_name=first_name, last_name=last_name, password=password, email=email
         )
         user.save()
-        return render(request, "movies/index")
+        auth.login(request, user)
+        print(f"Welcome to Movierama {username}!")
+        # messages.success(request, f"Welcome to Movierama {username}!")
+
+        return redirect("index")
 
     else:
         return render(request, "accounts/register.html")
@@ -34,6 +40,27 @@ def register(request):
 def logout(request):
     if request.method == "POST":
         auth.logout(request)
-        messages.success(request, "You are now logged out")
-        # return redirect("login")
-        return render(request, "movies/index.html")
+        print("You have logged out from Movierama")
+        # messages.success(request, "You have logged out from Movierama")
+        return redirect("index")
+
+
+def login(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            print(f"Welcome back {username}!")
+            # messages.success(request, f"Welcome back {username}!")
+            return redirect("index")
+        else:
+            print("Invalid credentials, check your username and password and try again")
+            # messages.error(request, "Invalid credentials, check your username and password and try again")
+            return redirect("login")
+
+    else:
+        return render(request, "accounts/login.html")
