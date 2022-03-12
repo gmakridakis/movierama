@@ -7,7 +7,7 @@ class MovieAdmin(admin.ModelAdmin):
     list_display = ("title", "description", "upvotes", "downvotes")
     list_filter = ("title", "description")
     list_display_links = ["title"]
-    list_editable = ("description", "upvotes", "downvotes")  # TODO: remove upvotes & downvotes from editable
+    list_editable = ["description"]
     search_fields = ("title", "description")
     list_per_page = 20
 

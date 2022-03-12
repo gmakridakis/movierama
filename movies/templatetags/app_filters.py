@@ -7,7 +7,6 @@ register = template.Library()
 
 @register.filter
 def get_users_votes(user, movie):
-    print(f"user: {user}, movie: {movie}")
     if not user.is_authenticated:
         return None
 
