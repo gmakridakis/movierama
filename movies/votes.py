@@ -1,5 +1,6 @@
 from django.db import IntegrityError
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from movies.models import Movie, Vote
 
@@ -18,9 +19,9 @@ def add_vote(request):
     except IntegrityError:
         print(f"User with ID {user_id} has already voted for movie with ID {movie.id}")
         # messages.error(request, "You have already voted for this movie")
-        return redirect(request.META["HTTP_REFERER"])
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
-    return redirect(request.META["HTTP_REFERER"])
+    return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
 
 def retract_vote(request):
@@ -37,9 +38,9 @@ def retract_vote(request):
     except Vote.DoesNotExist:
         print(f"User with ID {user_id} has not voted for movie with ID {movie.id}")
         # messages.error(request, "You have not voted for this movie")
-        return redirect(request.META["HTTP_REFERER"])
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
-    return redirect(request.META["HTTP_REFERER"])
+    return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
 
 def _validate_request(request):
@@ -53,6 +54,6 @@ def _validate_request(request):
         except Movie.DoesNotExist:
             print(f"There is no movie with ID {movie_id}")
             # messages.error(request, "Cannot find the requested movie")
-            return redirect(request.META["HTTP_REFERER"])
+            return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
         return movie, user_id, is_upvote

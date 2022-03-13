@@ -1,6 +1,8 @@
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
 
 
 def register(request):
@@ -16,12 +18,12 @@ def register(request):
         if password != password2:
             print("Passwords do not match")
             # messages.error(request, "Passwords do not match")
-            return redirect("register")
+            return HttpResponseRedirect(reverse("register"))
 
         if User.objects.filter(username=username).exists():
             print(f"User with username {username} already exists")
             # messages.error(request, f"User with username {username} already exists")
-            return redirect("register")
+            return HttpResponseRedirect(reverse("register"))
 
         user = User.objects.create_user(
             username=username, first_name=first_name, last_name=last_name, password=password, email=email
@@ -30,8 +32,7 @@ def register(request):
         auth.login(request, user)
         print(f"Welcome to Movierama {username}!")
         # messages.success(request, f"Welcome to Movierama {username}!")
-
-        return redirect("index")
+        return HttpResponseRedirect(reverse("index"))
 
     else:
         return render(request, "accounts/register.html")
@@ -42,7 +43,7 @@ def logout(request):
         auth.logout(request)
         print("You have logged out from Movierama")
         # messages.success(request, "You have logged out from Movierama")
-        return redirect("index")
+        return HttpResponseRedirect(reverse("index"))
 
 
 def login(request):
@@ -56,11 +57,11 @@ def login(request):
             auth.login(request, user)
             print(f"Welcome back {username}!")
             # messages.success(request, f"Welcome back {username}!")
-            return redirect("index")
+            return HttpResponseRedirect(reverse("index"))
         else:
             print("Invalid credentials, check your username and password and try again")
             # messages.error(request, "Invalid credentials, check your username and password and try again")
-            return redirect("login")
+            return HttpResponseRedirect(reverse("index"))
 
     else:
         return render(request, "accounts/login.html")
