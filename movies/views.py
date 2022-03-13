@@ -2,16 +2,25 @@ from django.shortcuts import redirect, render
 
 from movies.models import Movie
 
+ORDER_OPTIONS = {"date": "-date_added", "likes": "-upvotes", "hates": "-downvotes"}
 
-def index(request):
-    movies = Movie.objects.all().order_by("-date_added")
-    context = {"movies": movies}
+
+def index(request, order="date"):
+    if order not in ORDER_OPTIONS.keys():
+        print(f"Invalid order option: {order}")
+        # messages.error(request, f"Invalid order option")
+        return redirect("index")
+    movies = Movie.objects.all().order_by(ORDER_OPTIONS[order])
+    context = {"movies": movies, "current_url": "/movies"}
     return render(request, "movies/index.html", context)
 
 
-def user_movies(request, user_id):
-    movies = Movie.objects.filter(user_id=user_id).order_by("-date_added")
-    context = {"movies": movies}
+def user_movies(request, user_id, order="date"):
+    if order not in ORDER_OPTIONS.keys():
+        print(f"Invalid order option: {order}")
+        # messages.error(request, f"Invalid order option")
+    movies = Movie.objects.filter(user_id=user_id).order_by(ORDER_OPTIONS[order])
+    context = {"movies": movies, "current_url": f"/movies/user_movies/{user_id}"}
     return render(request, "movies/index.html", context)
 
 
