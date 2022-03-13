@@ -54,7 +54,6 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             print(f"User {user.username} logged in")
-            messages.success(request, f"Successful login")
             return HttpResponseRedirect(reverse("index"))
         else:
             messages.error(request, "Invalid credentials, check your username and password and try again")
