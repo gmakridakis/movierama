@@ -71,7 +71,8 @@
                             <tr>
                               <th scope="col">Title</th>
                               <th scope="col">Description</th>
-                              <th scope="col">Submitted by</th>
+                              <th scope="col">Added by</th>
+                              <th scope="col">Added</th>
                               <th scope="col">Votes</th>
 
                             </tr>
@@ -87,6 +88,7 @@
                                         (deleted user)
                                     {% endif %}
                                 </td>
+                                <td>{{ movie.age }}</td>
                                 <td>
                                     {{ movie.upvotes}} Likes
                                     {{ movie.downvotes}} Hates
