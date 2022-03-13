@@ -46,7 +46,7 @@
                     Sort by :
                     | <a href="{{ current_url | urlencode }}/date">Date</a>
                     | <a href="{{ current_url | urlencode }}/likes">Likes</a>
-                    | <a href="{{ current_url | urlencode }}/hates">Hates</a>|
+                    | <a href="{{ current_url | urlencode }}/hates">Hates</a> |
                 </h5>
                 </div>
                 </div>
@@ -81,7 +81,7 @@
                                 <td>{{ movie.description }}</td>
                                 <td>
                                     {%  if movie.user %}
-                                        <a href="{% url 'user_movies' user_id=movie.user.id %}">{{ movie.user.username }}</a>
+                                        <a href="{% url 'index' user_id=movie.user.id %}">{{ movie.user.username }}</a>
                                     {%  else %}
                                         (deleted user)
                                     {% endif %}

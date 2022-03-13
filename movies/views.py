@@ -5,22 +5,20 @@ from movies.models import Movie
 ORDER_OPTIONS = {"date": "-date_added", "likes": "-upvotes", "hates": "-downvotes"}
 
 
-def index(request, order="date"):
+def movies_list(request, user_id=None, order="date"):
     if order not in ORDER_OPTIONS.keys():
         print(f"Invalid order option: {order}")
         # messages.error(request, f"Invalid order option")
         return redirect("index")
-    movies = Movie.objects.all().order_by(ORDER_OPTIONS[order])
-    context = {"movies": movies, "current_url": "/movies"}
-    return render(request, "movies/index.html", context)
+    movies = Movie.objects.all()
+    current_url = "/movies"
 
+    if user_id:
+        movies = movies.filter(user_id=user_id)
+        current_url = f"{current_url}/{user_id}"
 
-def user_movies(request, user_id, order="date"):
-    if order not in ORDER_OPTIONS.keys():
-        print(f"Invalid order option: {order}")
-        # messages.error(request, f"Invalid order option")
-    movies = Movie.objects.filter(user_id=user_id).order_by(ORDER_OPTIONS[order])
-    context = {"movies": movies, "current_url": f"/movies/user_movies/{user_id}"}
+    movies = movies.order_by(ORDER_OPTIONS[order])
+    context = {"movies": movies, "current_url": current_url}
     return render(request, "movies/index.html", context)
 
 
