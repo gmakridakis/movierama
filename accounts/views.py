@@ -17,12 +17,12 @@ def register(request):
         # Validations
         if password != password2:
             print("Passwords do not match")
-            # messages.error(request, "Passwords do not match")
+            messages.error(request, "Passwords do not match")
             return HttpResponseRedirect(reverse("register"))
 
         if User.objects.filter(username=username).exists():
             print(f"User with username {username} already exists")
-            # messages.error(request, f"User with username {username} already exists")
+            messages.error(request, f"User with username {username} already exists")
             return HttpResponseRedirect(reverse("register"))
 
         user = User.objects.create_user(
@@ -31,7 +31,7 @@ def register(request):
         user.save()
         auth.login(request, user)
         print(f"Welcome to Movierama {username}!")
-        # messages.success(request, f"Welcome to Movierama {username}!")
+        messages.success(request, f"Welcome to Movierama {username}!")
         return HttpResponseRedirect(reverse("index"))
 
     else:
@@ -42,7 +42,7 @@ def logout(request):
     if request.method == "POST":
         auth.logout(request)
         print("You have logged out from Movierama")
-        # messages.success(request, "You have logged out from Movierama")
+        messages.success(request, "You have logged out from Movierama")
         return HttpResponseRedirect(reverse("index"))
 
 
@@ -56,11 +56,11 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             print(f"Welcome back {username}!")
-            # messages.success(request, f"Welcome back {username}!")
+            messages.success(request, f"Welcome back {username}!")
             return HttpResponseRedirect(reverse("index"))
         else:
             print("Invalid credentials, check your username and password and try again")
-            # messages.error(request, "Invalid credentials, check your username and password and try again")
+            messages.error(request, "Invalid credentials, check your username and password and try again")
             return HttpResponseRedirect(reverse("index"))
 
     else:

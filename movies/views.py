@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -10,7 +11,7 @@ ORDER_OPTIONS = {"date": "-date_added", "likes": "-upvotes", "hates": "-downvote
 def movies_list(request, user_id=None, order="date"):
     if order not in ORDER_OPTIONS.keys():
         print(f"Invalid order option: {order}")
-        # messages.error(request, f"Invalid order option")
+        messages.error(request, f"Invalid order option")
         return HttpResponseRedirect(reverse("index"))
     movies = Movie.objects.all()
     current_url = "/movies"
@@ -32,14 +33,14 @@ def add_movie(request):
 
         if Movie.objects.filter(title=title).exists():
             print(f"There is already a movie with title: {title}")
-            # messages.error(request, f"There is already a movie with title: {title}")
+            messages.error(request, f"There is already a movie with title: {title}")
             return HttpResponseRedirect(reverse("add_movie"))
 
         movie = Movie.objects.create(title=title, description=description, user_id=user_id)
         movie.save()
 
         print(f'Your movie "{title}" has been registered to Movierama!')
-        # messages.success(request, f"Your movie "{title}" has been registered to Movierama!")
+        messages.success(request, f'Your movie "{title}" has been registered to Movierama!')
         return HttpResponseRedirect(reverse("index"))
 
     else:
