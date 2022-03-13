@@ -31,11 +31,13 @@ def add_movie(request):
         description = request.POST["description"]
         user_id = request.POST["user_id"]
 
+        if user_id == "None":
+            return HttpResponseRedirect(reverse("index"))
+
         if Movie.objects.filter(title=title).exists():
             print(f"There is already a movie with title: {title}")
             messages.error(request, f"There is already a movie with title: {title}")
             return HttpResponseRedirect(reverse("add_movie"))
-
         movie = Movie.objects.create(title=title, description=description, user_id=user_id)
         movie.save()
 
