@@ -16,7 +16,6 @@ def register(request):
 
         # Validations
         if password != password2:
-            print("Passwords do not match")
             messages.error(request, "Passwords do not match")
             return HttpResponseRedirect(reverse("register"))
 
@@ -30,7 +29,7 @@ def register(request):
         )
         user.save()
         auth.login(request, user)
-        print(f"Welcome to Movierama {username}!")
+        print(f"User {username} signed up")
         messages.success(request, f"Welcome to Movierama {username}!")
         return HttpResponseRedirect(reverse("index"))
 
@@ -41,7 +40,6 @@ def register(request):
 def logout(request):
     if request.method == "POST":
         auth.logout(request)
-        print("You have logged out from Movierama")
         messages.success(request, "You have logged out from Movierama")
         return HttpResponseRedirect(reverse("index"))
 
@@ -55,11 +53,10 @@ def login(request):
 
         if user is not None:
             auth.login(request, user)
-            print(f"Successful login")
+            print(f"User {user.username} logged in")
             messages.success(request, f"Successful login")
             return HttpResponseRedirect(reverse("index"))
         else:
-            print("Invalid credentials, check your username and password and try again")
             messages.error(request, "Invalid credentials, check your username and password and try again")
             return HttpResponseRedirect(reverse("index"))
 

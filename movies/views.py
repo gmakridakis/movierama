@@ -39,7 +39,7 @@ def add_movie(request):
         movie = Movie.objects.create(title=title, description=description, user_id=user_id)
         movie.save()
 
-        print(f'Your movie "{title}" has been registered to Movierama!')
+        print(f'Movie "{title}" added')
         messages.success(request, f'Your movie "{title}" has been registered to Movierama!')
         return HttpResponseRedirect(reverse("index"))
 
