@@ -7,5 +7,5 @@ COPY requirements.txt /app/
 RUN apt-get update \
   && apt-get install -y libpq-dev python3-dev gcc \
   && pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && pip install -r requirements_dev.txt
 COPY . /app/

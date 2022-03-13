@@ -1,0 +1,5 @@
+astroid==2.9.3
+isort==5.10.1
+lazy-object-proxy==1.7.1
+MarkupSafe==2.1.0
+mccabe==0.6.1
