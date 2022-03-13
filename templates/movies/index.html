@@ -71,10 +71,6 @@
                             <tr>
                               <th scope="col">Title</th>
                               <th scope="col">Description</th>
-                              <th scope="col">Added by</th>
-                              <th scope="col">Added</th>
-                              <th scope="col">Votes</th>
-
                             </tr>
                           </thead>
                             {% for movie in movies %}
@@ -82,17 +78,14 @@
                                 <td>{{ movie.title }}</td>
                                 <td>{{ movie.description }}</td>
                                 <td>
+                                    added by
                                     {%  if movie.user %}
                                         <a href="{% url 'index' user_id=movie.user.id %}">{{ movie.user.username }}</a>
                                     {%  else %}
                                         (deleted user)
-                                    {% endif %}
-                                </td>
-                                <td>{{ movie.age }}</td>
-                                <td>
-                                    {{ movie.upvotes}} Likes
-                                    {{ movie.downvotes}} Hates
-                                </td>
+                                    {% endif %}  {{ movie.age }}</td>
+                                <td>{{ movie.upvotes}} Likes</td>
+                                <td>{{ movie.downvotes}} Hates</td>
                                 {% if user.is_authenticated %}
                                     {% if movie.user.id != user.id %} {# Users cannot vote for their own movies #}
                                             {% with vote=user|get_users_votes:movie %}
