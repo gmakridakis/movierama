@@ -5,7 +5,11 @@ from django.urls import reverse
 
 from movies.models import Movie
 
-ORDER_OPTIONS = {"date": "-date_added", "likes": "-upvotes", "hates": "-downvotes"}
+ORDER_OPTIONS = {
+    "date": ["-date_added", "-upvotes", "downvotes"],
+    "likes": ["-upvotes", "downvotes", "-date_added"],
+    "hates": ["-downvotes", "upvotes", "-date_added"],
+}
 
 
 def movies_list(request, user_id=None, order="date"):
@@ -20,7 +24,7 @@ def movies_list(request, user_id=None, order="date"):
         movies = movies.filter(user_id=user_id)
         current_url = f"{current_url}/{user_id}"
 
-    movies = movies.order_by(ORDER_OPTIONS[order])
+    movies = movies.order_by(ORDER_OPTIONS[order][0], ORDER_OPTIONS[order][1], ORDER_OPTIONS[order][2])
     context = {"movies": movies, "current_url": current_url}
     return render(request, "movies/index.html", context)
 
